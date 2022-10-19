@@ -1,10 +1,7 @@
 
-# GLUA
-(pronounced 'glue')
-<img src='img/lib.png' width=150 align=right>
-#	glua.lua	
+# 4ALL
 
-Some general LUA functions.    	
+Some miscellaneous LUA functions. <br>
 (c)2022 Tim Menzies <timm@ieee.org> BSD-2 license	
    	
 For examples on how to use this code, see https://tinyurl.com/gluaeg.	
