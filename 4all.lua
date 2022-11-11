@@ -19,6 +19,15 @@ function l.rnd(n, nPlaces) --> num. return `n` rounded to `nPlaces`
   local mult = 10^(nPlaces or 3)
   return math.floor(n * mult + 0.5) / mult end
 
+function l.mu(ns,fun) --> num; return mean
+  fun = fun or l.same
+  local nall,mu = 0,0
+  for _,n in pairs(ns) do
+    if n ~= "?" then 
+      nall  = nall + 1
+      mu = mu + (fun(n)-mu)/nall end end
+  return mu end
+
 function l.sd(ns,fun) --> num; return standard deviation
   fun = fun or l.same
   local nall,mu,m2 = 0,0,0
@@ -48,6 +57,9 @@ function l.rint(nlo,nhi)  --> int; returns integer from `nlo`..`nhi` (default 0.
   return math.floor(0.5 + l.rand(nlo,nhi)) end
 
 -- ## Lists
+function l.array(t) --> t; ensure `t` has indexes `1.. size(t)`
+  local u={}; for _,x in pairs(t) do u[1+#u] = x end; return u end
+
 function l.any(t) --> any; return any item from `t`, picked at random
   return t[l.rint(#t)] end
 
@@ -63,6 +75,7 @@ function  l.per(t,p) --> num; return the `p`th(=.5) item of sorted list `t`
 function l.ent(t) --> num;  entropy
   local function calc(p) return p*math.log(p,2) end
   local n=0; for _,n1 in pairs(t) do n=n+n1 end
+  if n==0 then return 0 end
   local e=0; for _,n1 in pairs(t) do e=e - calc(n1/n) end 
   return e end
 
@@ -94,7 +107,7 @@ function l.lt(s) --> fun; return a function that sorts descending on `s`.
 function l.sort(t, fun) --> t; return `t`,  sorted by `fun` (default= `<`)
   table.sort(t,fun); return t end
 
--- ## Coercion
+-- ## Coercion
 -- ### Strings to Things
 function l.coerce(s) --> any; return int or float or bool or string from `s`
   local function fun(s1)
